@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dahon Bikes</title>
+    <script>
+function addToCartAndRedirect() {
+    // Add a blurred overlay to the background
+    const overlay = document.createElement("div");
+    overlay.id = "loading-overlay";
+    overlay.style.position = "fixed";
+    overlay.style.top = "0";
+    overlay.style.left = "0";
+    overlay.style.width = "100%";
+    overlay.style.height = "100%";
+    overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)"; // Semi-transparent black
+    overlay.style.backdropFilter = "blur(10px)"; // Blurs the background
+    overlay.style.zIndex = "9998";
+    document.body.appendChild(overlay);
+
+    // Add a spinner in the center of the screen
+    const spinner = document.createElement("div");
+    spinner.id = "loading-spinner";
+    spinner.style.position = "fixed";
+    spinner.style.top = "45%";
+    spinner.style.left = "50%";
+    spinner.style.transform = "translate(-50%, -50%)";
+    spinner.style.zIndex = "9999";
+    spinner.style.width = "60px";
+    spinner.style.height = "60px";
+    spinner.style.border = "5px solid rgba(255, 255, 255, 0.3)";
+    spinner.style.borderTop = "5px solid #fff";
+    spinner.style.borderRadius = "50%";
+    spinner.style.animation = "spin 1s linear infinite";
+    document.body.appendChild(spinner);
+
+    // Add a fun loading message
+    const loadingMessage = document.createElement("div");
+    loadingMessage.id = "loading-message";
+    loadingMessage.style.position = "fixed";
+    loadingMessage.style.top = "55%";
+    loadingMessage.style.left = "50%";
+    loadingMessage.style.transform = "translate(-50%, -50%)";
+    loadingMessage.style.color = "#fff";
+    loadingMessage.style.fontSize = "18px";
+    loadingMessage.style.fontFamily = "Arial, sans-serif";
+    loadingMessage.style.textAlign = "center";
+    loadingMessage.style.zIndex = "9999";
+    loadingMessage.textContent = "Hang tight! We're adding this to your cart...";
+    document.body.appendChild(loadingMessage);
+
+    // Add keyframes for the spinning animation
+    const style = document.createElement("style");
+    style.innerHTML = `
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Create a form dynamically to mimic the add-to-cart button
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "https://onyx.mu/product/dahon-mariner-d8-black/";
+
+    // Add the hidden input for the add-to-cart functionality
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = "add-to-cart";
+    input.value = "2416"; // Product ID for adding to the cart
+    form.appendChild(input);
+
+    // Append form to body
+    document.body.appendChild(form);
+
+    // Add an event listener to detect when the form has been submitted
+    form.addEventListener("submit", function() {
+        // Remove the loading spinner, message, and overlay after submission starts
+        document.body.removeChild(spinner);
+        document.body.removeChild(loadingMessage);
+        document.body.removeChild(overlay);
+    });
+
+    // Submit the form directly (no iframe)
+    form.submit();
+
+    // Redirect to the checkout page once the form is successfully submitted
+    setTimeout(function() {
+        window.location.href = "https://onyx.mu/checkout-2/";
+    }, 1000); // Delay redirect to simulate a seamless flow
+}
+
+
+
+        function updateButtonColorsBasedOnImage(imageSelector, buttonSelector) {
+            const img = document.querySelector(imageSelector);
+            const buttons = document.querySelectorAll(buttonSelector);
+
+            if (img) {
+                const colorThief = new ColorThief();
+                img.onload = () => {
+                    const dominantColor = colorThief.getColor(img);
+                    buttons.forEach(button => {
+                        button.style.backgroundColor = `rgb(${dominantColor[0]}, ${dominantColor[1]}, ${dominantColor[2]})`;
+                        button.style.color = "#fff";
+                    });
+                };
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            updateButtonColorsBasedOnImage(".top-image img", ".button-wrapper button");
+        });
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #e3e3e3, #ffffff);
+            overflow: hidden;
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .image-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            max-height: 50%;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .image-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            z-index: 1;
+        }
+
+        .image-container img {
+            width: auto;
+            height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+            transition: transform 0.5s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            border-radius: 8px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2;
+        }
+
+        .image-container img:hover {
+            transform: scale(1.1);
+            box-shadow: 0px 12px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-container button {
+            bottom: 50px;
+            padding: 10px 20px;
+            background: #733439;
+            color: #D0D8D9;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease;
+            z-index: 3;
+        }
+
+        .image-container button:hover {
+            color: #733439 !important;
+            background: #BFADA3 !important;
+        }
+
+        .top-image {
+            border-bottom: 5px solid #222;
+            background-image: url('http://dahonfoldingbikes.com/wp-content/uploads/2022/08/Dahon-Mariner-Black-product-shot-door_D4J3961LR.jpg?id=346');
+        }
+
+        .all-bikes {
+            background-image: url('Images/AllBikes.jpg');
+        }
+
+        .text-overlay {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            z-index: 3;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center; /* Align the buttons horizontally */
+            gap: 10px; /* Adds horizontal space between the buttons */
+            margin-top: 20px; /* Adds space from the top for positioning */
+        }
+
+        @media (orientation: landscape) {
+            .image-container {
+                max-height: none;
+                flex: 0 0 50%;
+            }
+
+            .container {
+                flex-direction: row;
+            }
+
+            body {
+                justify-content: space-evenly;
+            }
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .button-wrapper {
+            position: absolute;
+            bottom: 20px; /* Keep the buttons at the bottom of the section */
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px; /* Space between the buttons */
+            z-index: 3;
+        }
+
+        .button-wrapper button {
+            padding: 10px 20px;
+            background: #733439;
+            color: #D0D8D9;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease;
+        }
+
+        .button-wrapper button:hover {
+            background: #A6A6A4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Current model image -->
+        <div class="image-container top-image">
+            <span class="text-overlay">Current Model: Mariner D8</span>
+            <a href="https://onyx.mu/product/dahon-mariner-d8-black/" target="_blank">
+                <img src="http://dahonfoldingbikes.com/wp-content/uploads/2022/08/Dahon-Mariner-Black-product-shot-door_D4J3961LR.jpg?id=346" alt="Current Dahon Bike Model">
+            </a>
+            <div class="button-wrapper">
+                <button onclick="addToCartAndRedirect()">Get yours now!</button>
+                <button onclick="window.open('https://onyx.mu/product/dahon-mariner-d8-black/', '_blank')">View More</button>
+            </div>
+        </div>
+        
+
+        <!-- All bikes image -->
+        <div class="image-container all-bikes">
+            <span class="text-overlay">Explore All Bikes</span>
+            <a href="https://onyx.mu/product-category/bikes/" target="_blank">
+                <img src="Images/AllBikes.jpg" alt="All Dahon Bikes">
+            </a>
+            <button onclick="window.open('https://onyx.mu/product-category/bikes/', '_blank')" style="position: absolute;">Browse All</button>
+        </div>
+    </div>
+</body>
+</html>
